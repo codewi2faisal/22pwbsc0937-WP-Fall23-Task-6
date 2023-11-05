@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OLMS Web App</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: space-around;
+            padding: 20px;
+       
+        }
+
+        #book-list, #add-book, #search-book {
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin: 10px;
+            border-radius: 10px;
+            width: 30%;
+        }
+
+        #book-list {
+            height: 400px;
+            overflow: auto;
+        }
+
+        #book-list ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #book-list li {
+            margin-bottom: 10px;
+        }
+
+        #add-book, #search-book {
+            width: 30%;
+        }
+
+        button {
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        input {
+            padding: 10px;
+            margin-bottom: 10px;
+            width: 100%;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div id="book-list">
+        <h2>Book List</h2>
+        <ul id="book-list-content"></ul>
+    </div>
+
+    <div id="add-book">
+        <h2>Add New Book</h2>
+        <input type="text" id="title" placeholder="Title">
+        <input type="text" id="author" placeholder="Author">
+        <button onclick="addBook()">Add Book</button>
+    </div>
+
+    <div id="search-book">
+        <h2>Search for Books</h2>
+        <input type="text" id="search" placeholder="Search">
+        <button onclick="searchBooks()">Search</button>
+    </div>
+
+    <script>
+        let books = [];
+
+        function addBook() {
+            const title = document.getElementById('title').value;
+            const author = document.getElementById('author').value;
+
+            if (title && author) {
+                const duplicate = books.some(book => book.title === title && book.author === author);
+
+                if (!duplicate) {
+                    books.push({ title, author });
+                    displayBookList();
+                } else {
+                    alert('Book already exists!');
+                }
+            } else {
+                alert('Please enter title and author.');
+            }
+        }
+
+        function displayBookList() {
+            const bookListContent = document.getElementById('book-list-content');
+            bookListContent.innerHTML = '';
+
+            books.forEach(book => {
+                const li = document.createElement('li');
+                li.textContent = `${book.title} by ${book.author}`;
+                bookListContent.appendChild(li);
+            });
+        }
+
+        function searchBooks() {
+            const searchValue = document.getElementById('search').value.toLowerCase();
+            const filteredBooks = books.filter(book => book.title.toLowerCase().includes(searchValue) || book.author.toLowerCase().includes(searchValue));
+            displayBookList(filteredBooks);
+        }
+    </script>
+</body>
+</html>
